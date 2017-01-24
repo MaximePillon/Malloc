@@ -5,7 +5,7 @@
 ** Login   <maxime.pillon@epitech.eu>
 **
 ** Started on  Mon Jan 23 12:29:30 2017 Maxime PILLON
-** Last update Tue Jan 24 11:20:24 2017 Sylvain CORSINI
+** Last update Tue Jan 24 12:42:43 2017 Sylvain CORSINI
 */
 
 #ifndef PSU_2016_MALLOC_ALLOCATION_H
@@ -23,5 +23,7 @@ struct block {
 typedef struct block t_block;
 
 # define	BLOCK_SIZE (12)
+# define  ALIGN4(x) (((((x) - 1) >> 2) << 2) + 4)
+
 
 #endif //PSU_2016_MALLOC_ALLOCATION_H
