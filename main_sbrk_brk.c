@@ -18,9 +18,9 @@ int main()
   char *var;
 
 //sizeof(int) * 4
-  if ((toto = malloc(sizeof(int) * 4)) == NULL)
+  if ((toto = my_malloc(sizeof(int) * 4)) == NULL)
     write(1, "tamere", 6);
-  if ((var = malloc(sizeof(char) * 6)) == NULL)
+  if ((var = my_malloc(sizeof(char) * 6)) == NULL)
     write(1, "tamere2", 7);
 
   toto[0] = 12;
