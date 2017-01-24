@@ -5,7 +5,7 @@
 ** Login   <maxime.pillon@epitech.eu>
 **
 ** Started on  Mon Jan 23 12:29:30 2017 Maxime PILLON
-** Last update Tue Jan 24 12:42:43 2017 Sylvain CORSINI
+** Last update Tue Jan 24 13:49:34 2017 Sylvain CORSINI
 */
 
 #ifndef PSU_2016_MALLOC_ALLOCATION_H
@@ -16,14 +16,15 @@ void *my_malloc(size_t size);
 struct block {
   size_t        size;
   struct block  *next;
+  struct block  *prev;
   int           free;
-  char          data[1];
+  void          *ptr;
 };
 
 typedef struct block t_block;
 
-# define	BLOCK_SIZE (12)
-# define  ALIGN4(x) (((((x) - 1) >> 2) << 2) + 4)
+# define	BLOCK_SIZE (sizeof(struct block))
 
+extern void *g_base_heap;
 
 #endif //PSU_2016_MALLOC_ALLOCATION_H
