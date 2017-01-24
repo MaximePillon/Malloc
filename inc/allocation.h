@@ -12,7 +12,6 @@
 # define PSU_2016_MALLOC_ALLOCATION_H
 
 # include <glob.h>
-# include <stdbool.h>
 
 void *malloc(size_t size);
 
