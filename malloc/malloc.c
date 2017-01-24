@@ -16,10 +16,10 @@ void        *g_base_heap = 0;
 
 size_t      get_size_of_malloc(size_t size)
 {
-  int       page_size;
-  int       page_size_total;
+  size_t       page_size;
+  size_t    page_size_total;
 
-  page_size_total = getpagesize();
+  page_size_total = (size_t)getpagesize();
   page_size = page_size_total;
   while (size + BLOCK_SIZE > page_size)
   {
@@ -58,8 +58,8 @@ t_block     *split_block(t_block *block, size_t size)
     new_block->next = block->next;
     block->next = new_block;
     new_block->free = 1;
-    return (block);
   }
+  return (block);
 }
 
 t_block     *find_block(t_block **last_block, size_t size)
@@ -67,7 +67,7 @@ t_block     *find_block(t_block **last_block, size_t size)
   t_block   *block;
 
   block = g_base_heap;
-  while (block->free == 0 && block->size >= size)
+  while (!(block->free == 1 && block->size >= size))
   {
     *last_block = block;
     block = block->next;
@@ -75,7 +75,7 @@ t_block     *find_block(t_block **last_block, size_t size)
   return (block);
 }
 
-void 		    *malloc(size_t size)
+void 		    *my_malloc(size_t size)
 {
   t_block   *block;
   t_block   *last;
