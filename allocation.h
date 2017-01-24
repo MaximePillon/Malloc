@@ -11,7 +11,7 @@
 #ifndef PSU_2016_MALLOC_ALLOCATION_H
 # define PSU_2016_MALLOC_ALLOCATION_H
 
-void *my_malloc(size_t size);
+void *malloc(size_t size);
 
 struct block {
   size_t        size;

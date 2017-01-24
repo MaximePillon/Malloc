@@ -5,7 +5,7 @@
 ** Login   <maxime.pillon@epitech.eu>
 **
 ** Started on  Mon Jan 23 10:25:50 2017 Maxime PILLON
-** Last update Tue Jan 24 14:14:03 2017 Sylvain CORSINI
+** Last update Tue Jan 24 14:28:01 2017 Sylvain CORSINI
 */
 
 #include        <stddef.h>
@@ -77,7 +77,7 @@ static t_block     *find_block(t_block **last_block, size_t size)
   return (block);
 }
 
-void                *my_malloc(size_t size)
+void 		    *malloc(size_t size)
 {
   t_block           *block;
   t_block           *last;
