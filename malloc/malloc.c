@@ -67,7 +67,7 @@ t_block     *find_block(t_block **last_block, size_t size)
   t_block   *block;
 
   block = g_base_heap;
-  while (!(block->free == 1 && block->size >= size))
+  while (block && !(block->free == 1 && block->size >= size))
   {
     *last_block = block;
     block = block->next;
@@ -75,7 +75,7 @@ t_block     *find_block(t_block **last_block, size_t size)
   return (block);
 }
 
-void 		    *my_malloc(size_t size)
+void 		    *malloc(size_t size)
 {
   t_block   *block;
   t_block   *last;
