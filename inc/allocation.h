@@ -5,20 +5,23 @@
 ** Login   <maxime.pillon@epitech.eu>
 **
 ** Started on  Mon Jan 23 12:29:30 2017 Maxime PILLON
-** Last update Mon Jan 23 12:29:30 2017 Maxime PILLON
+** Last update Tue Jan 24 11:20:24 2017 Sylvain CORSINI
 */
 
 #ifndef PSU_2016_MALLOC_ALLOCATION_H
 # define PSU_2016_MALLOC_ALLOCATION_H
 
-# include <glob.h>
-
 void *malloc(size_t size);
 
-typedef struct block {
-  size_t 	dataSize;
-}		t_struct;
+struct block {
+  size_t        size;
+  struct block  *next;
+  int           free;
+  char          data[1];
+};
 
-# define	BLOCK_SIZE 4
+typedef struct block t_block;
+
+# define	BLOCK_SIZE (12)
 
 #endif //PSU_2016_MALLOC_ALLOCATION_H
