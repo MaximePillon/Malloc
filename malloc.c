@@ -8,6 +8,10 @@
 ** Last update Tue Jan 24 14:28:01 2017 Sylvain CORSINI
 */
 
+#include <stdio.h>
+
+
+
 #include        <stddef.h>
 #include        <unistd.h>
 #include        "allocation.h"
@@ -39,6 +43,7 @@ static t_block   *extend_heap(t_block *last_block, size_t size)
   block->size = size - BLOCK_SIZE;
   block->next = 0;
   block->prev = last_block;
+  block->ptr = block + BLOCK_SIZE;
   if (last_block != 0)
     last_block->next = block;
   block->free = 0;
@@ -60,6 +65,7 @@ static t_block    *split_block(t_block *block, size_t size)
     new_block->next = block->next;
     block->next = new_block;
     new_block->free = 1;
+    new_block->ptr = new_block + BLOCK_SIZE;
   }
   return (block);
 }
@@ -93,10 +99,13 @@ void 		    *malloc(size_t size)
     block = find_block(&last, size);
     if (block == 0)
       block = extend_heap(last, size);
-    else
+    else {
       block = split_block(block, size);
+      block->free = 0;
+    }
   }
   if (block == 0)
     return (0);
-  return ((void *)(block + BLOCK_SIZE));
+  printf("size : %d / free : %d / ptr : %p / block :%p / next : %p / prev : %p\n", (int)block->size, block->free, block->ptr, block, block->next, block->prev);
+  return ((block + BLOCK_SIZE));
 }

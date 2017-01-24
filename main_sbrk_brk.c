@@ -10,18 +10,24 @@
 
 #include <unistd.h>
 #include <stdio.h>
-#include "inc/allocation.h"
+#include "allocation.h"
 
 int main()
 {
   int *toto;
   char *var;
 
-//sizeof(int) * 4
-  if ((toto = malloc(sizeof(int) * 4)) == NULL)
+
+  printf("===================\n");
+  printf("malloc toto(5000)\n");
+  if ((toto = malloc(5000)) == NULL)
     write(1, "tamere", 6);
+  printf("toto(5000) : %p\n", toto);
   if ((var = malloc(sizeof(char) * 6)) == NULL)
     write(1, "tamere2", 7);
+  printf("var : %p\n", (void *)var);
+  printf("===================\n");
+
 
   toto[0] = 12;
   toto[1] = 24;
@@ -34,4 +40,19 @@ int main()
   var[2] = 'L';
   var[3] = '\0';
   printf("%d %d %d %d, %s\n", toto[0], toto[1], toto[2], toto[18], var);
+  printf("===================\n");
+  printf("free toto(5000)\n");
+  free(toto);
+
+  printf("malloc toto(10)\n");
+  if ((toto = malloc(10)) == NULL)
+    write(1, "tamere3", 7);
+  printf("toto(10) : %p\n", toto);
+  printf("===================\n");
+
+  printf("free var\n");
+  free(var);
+  printf("free toto(10)\n");
+  free(toto);
+  printf("sbrk : %p\n", sbrk(0));
 }

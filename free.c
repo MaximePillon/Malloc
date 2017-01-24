@@ -8,15 +8,19 @@
 ** Last update Tue Jan 24 14:25:25 2017 Sylvain CORSINI
 */
 
+#include <stdio.h>
+
+
+
 #include 	<unistd.h>
 #include 	"allocation.h"
 
 t_block *get_block(void *ptr)
 {
-  t_block *block;
-
-  block = ptr - BLOCK_SIZE;
-  return (block);
+  t_block *tmp;
+  tmp = ptr;
+  tmp -= BLOCK_SIZE;
+  return (tmp);
 }
 
 int valid_addr(void *ptr)
@@ -25,7 +29,7 @@ int valid_addr(void *ptr)
 
   if (g_base_heap != 0)
   {
-    if (ptr > g_base_heap || ptr < sbrk(0))
+    if (ptr > g_base_heap && ptr < sbrk(0))
     {
       block = get_block(ptr);
       return (block->ptr == ptr);
@@ -55,6 +59,7 @@ void free(void *ptr)
       fusion_block(block);
     if (block->prev != 0 && block->prev->free == 1)
       block = fusion_block(block->prev);
+    printf("size : %d / free : %d / ptr : %p / block :%p / next : %p / prev : %p\n", (int)block->size, block->free, block->ptr, block, block->next, block->prev);
     if (block->next == 0)
     {
       if (block->prev != 0)
