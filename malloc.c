@@ -56,11 +56,11 @@ static t_block    *split_block(t_block *block, size_t size)
   size_t          new_size;
 
   new_size = get_size_of_malloc(size);
-  if (new_size - BLOCK_SIZE == block->size)
+  if (new_size - BLOCK_SIZE != block->size)
   {
-    new_block = block + new_size;
-    new_block->size = block->size - new_size - BLOCK_SIZE;
-    block->size = new_size;
+    new_block = (void*)block + new_size;
+    new_block->size = new_size - BLOCK_SIZE;
+    block->size = block->size - new_size;
     new_block->prev = block;
     new_block->next = block->next;
     block->next = new_block;
@@ -106,6 +106,5 @@ void 		    *malloc(size_t size)
   }
   if (block == 0)
     return (0);
-  printf("size : %d / free : %d / ptr : %p / block :%p / next : %p / prev : %p\n", (int)block->size, block->free, block->ptr, block, block->next, block->prev);
-  return ((block + BLOCK_SIZE));
+  return ((void*)(block + BLOCK_SIZE));
 }

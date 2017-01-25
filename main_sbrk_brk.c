@@ -20,11 +20,15 @@ int main()
 
   printf("===================\n");
   printf("malloc toto(5000)\n");
-  if ((toto = malloc(5000)) == NULL)
+  if ((toto = malloc(5000)) == NULL) {
     write(1, "tamere", 6);
+    return 0;
+  }
   printf("toto(5000) : %p\n", toto);
-  if ((var = malloc(sizeof(char) * 6)) == NULL)
+  if ((var = malloc(sizeof(char) * 6)) == NULL) {
     write(1, "tamere2", 7);
+    return 0;
+  }
   printf("var : %p\n", (void *)var);
   printf("===================\n");
 
@@ -54,5 +58,35 @@ int main()
   free(var);
   printf("free toto(10)\n");
   free(toto);
-  printf("sbrk : %p\n", sbrk(0));
+
+
+
+  printf("\n\n\n\nNew salve of test\n");
+  printf("je vais niquer des mamans\n");
+  char *var1;
+  char *var2;
+  char *var3;
+  char *var4;
+
+  if ((var1 = malloc(8192)) == NULL)
+    return 0;
+  printf("malloc 4095 execute\n");
+  if ((var2 = malloc(10000)) == NULL)
+    return 0;
+  printf("malloc 10000 execute\n");
+  if ((var3 = malloc(4)) == NULL)
+    return 0;
+  printf("malloc 4 execute\n");
+  free(var1);
+  printf("var1 free\n");
+  if ((var4 = malloc(4000)) == NULL)
+    return 0;
+  printf("malloc 4000 exucute\n");
+  free(var2);
+  printf("free var2\n");
+  free(var3);
+  printf("free var3\n");
+  free(var4);
+  printf("free var4\n");
+  return (0);
 }

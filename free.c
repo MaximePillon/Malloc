@@ -59,7 +59,6 @@ void free(void *ptr)
       fusion_block(block);
     if (block->prev != 0 && block->prev->free == 1)
       block = fusion_block(block->prev);
-    printf("size : %d / free : %d / ptr : %p / block :%p / next : %p / prev : %p\n", (int)block->size, block->free, block->ptr, block, block->next, block->prev);
     if (block->next == 0)
     {
       if (block->prev != 0)
