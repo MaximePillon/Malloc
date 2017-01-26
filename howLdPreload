@@ -1,3 +1,2 @@
-gcc -fPIC -DPIC -Iinc/ -g -ggdb3 -c malloc.c free.c
-ld -shared -o malloc.so malloc.o free.o -ldl
-LD_PRELOAD=/home/god/TEK2/PSU_MEMOIRE/PSU_2016_malloc/malloc.so ./moul
+gcc -fPIC -DPIC -Iinc/ -g -ggdb3 -c malloc.c free.c realloc.c allocation_utils.c && ld -shared -o malloc.so malloc.o free.o realloc.o allocation_utils.o -ldl && LD_PRELOAD=`pwd`/malloc.so ./moul
+rm *.o malloc.so
