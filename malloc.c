@@ -19,7 +19,7 @@ static t_block *extend_heap(t_block *last_block, size_t size)
   t_block *block;
   size_t max_size;
 
-  max_size = get_size_of_malloc(size);
+  max_size = get_sufficient_size_of_malloc(size);
   block = sbrk(0);
   if (sbrk(max_size) == (void *) -1)
     return (NULL);

@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include "allocation.h"
 
-size_t get_size_of_malloc(size_t required_size)
+size_t get_sufficient_size_of_malloc(size_t required_size)
 {
   size_t sufficient_size;
   size_t page_size;
@@ -47,7 +47,7 @@ t_block *split_block(t_block *block, size_t size)
   t_block *new_block;
   size_t new_size;
 
-  new_size = get_size_of_malloc(size);
+  new_size = get_sufficient_size_of_malloc(size);
   if (new_size - BLOCK_SIZE != block->max_size)
     {
       new_block = (void *) block + new_size;

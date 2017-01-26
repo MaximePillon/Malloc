@@ -36,7 +36,7 @@ void free(void *ptr);
 
 void *realloc(void *ptr, size_t size);
 
-size_t get_size_of_malloc(size_t size);
+size_t get_sufficient_size_of_malloc(size_t size);
 
 t_block *get_block(void *ptr);
 
