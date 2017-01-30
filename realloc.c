@@ -12,6 +12,39 @@
 #include <memory.h>
 #include "allocation.h"
 
+static void *extend_block(t_block *block, size_t size)
+{
+  size_t sufficient_size;
+
+  sufficient_size = size + BLOCK_SIZE;//sufficient_size = get_sufficient_size_of_malloc(size);
+  if (sbrk(sufficient_size - block->max_size) == NULL)
+    return (NULL);
+  block->max_size = sufficient_size - BLOCK_SIZE;
+  block->required_size = size;
+  return (block);
+}
+
+static void *check_neighbor(t_block *block, size_t size)
+{
+  if (block->next != NULL && block->next->free == 1)
+    {
+      if (block->max_size + block->next->max_size + BLOCK_SIZE >= size)
+	return (split_block(fusion_block(block), size));
+      else if (block->prev != NULL && block->prev->free == 1)
+	return (split_block(fusion_block(fusion_block(block->prev)), size));
+    }
+  if (block->prev != NULL && block->prev->free == 1)
+    {
+      if (block->max_size + block->prev->max_size + BLOCK_SIZE >= size)
+	return (split_block(fusion_block(block->prev), size));
+      else if (block->next == NULL)
+	return (extend_block(fusion_block(block->prev), size));
+    }
+  if (block->next == NULL)
+    return (extend_block(block, size));
+  return (NULL);
+}
+
 void *realloc(void *ptr, size_t size)
 {
   t_block *block;
@@ -24,9 +57,9 @@ void *realloc(void *ptr, size_t size)
       block = get_block(ptr);
       if (block->max_size >= size)
 	return (split_block(block, size));
-      if (block->next != NULL && block->next->free == 1
-	  && block->max_size + block->next->max_size + BLOCK_SIZE >= size)
-	return (split_block(fusion_block(block), size));
+      new_block = check_neighbor(block, size);
+      if (new_block != NULL)
+	return (new_block);
       new_block = malloc(size);
       if (new_block == NULL)
 	{

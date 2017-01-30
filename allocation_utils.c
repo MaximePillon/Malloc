@@ -47,8 +47,8 @@ t_block *split_block(t_block *block, size_t size)
   t_block *new_block;
   size_t new_size;
 
-  new_size = get_sufficient_size_of_malloc(size);
-  if (new_size - BLOCK_SIZE != block->max_size)
+  new_size = size + BLOCK_SIZE; //new_size = get_sufficient_size_of_malloc(size);
+  if (new_size - BLOCK_SIZE < block->max_size)
     {
       new_block = (void *) block + new_size;
       new_block->max_size = block->max_size - new_size;
@@ -59,6 +59,8 @@ t_block *split_block(t_block *block, size_t size)
       block->next = new_block;
       new_block->free = 1;
       new_block->magic_number = (void *) new_block + BLOCK_SIZE;
+      if (new_block->next == NULL)
+	free((void *) new_block + BLOCK_SIZE);
     }
   block->required_size = size;
   return (block);
