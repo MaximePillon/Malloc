@@ -12,7 +12,6 @@
 # define PSU_2016_MALLOC_ALLOCATION_H
 
 #include <stddef.h>
-#include<pthread.h>
 
 struct block
 {
@@ -30,7 +29,6 @@ typedef struct block t_block;
 
 extern void *g_base_heap;
 
-extern pthread_mutex_t lock;
 
 void *malloc(size_t size);
 

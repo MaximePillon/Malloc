@@ -14,14 +14,12 @@
 
 void *g_base_heap = NULL;
 
-pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
-
 static t_block *extend_heap(t_block *last_block, size_t size)
 {
   t_block *block;
   size_t max_size;
 
-  max_size = size + BLOCK_SIZE; //max_size = get_sufficient_size_of_malloc(size);
+  max_size = size + BLOCK_SIZE;//max_size = get_sufficient_size_of_malloc(size);
   block = sbrk(0);
   if (sbrk(max_size) == (void *) -1)
     return (NULL);
@@ -53,7 +51,7 @@ void *malloc(size_t size)
 {
   t_block *block;
   t_block *last_block;
-  pthread_mutex_lock(&lock);
+  
   if (g_base_heap == NULL)
     {
       block = extend_heap(NULL, size);
@@ -71,7 +69,6 @@ void *malloc(size_t size)
 	  block->free = 0;
 	}
     }
-  pthread_mutex_unlock(&lock);
   if (block == NULL)
     return (NULL);
   return ((void *) block + BLOCK_SIZE);
