@@ -8,7 +8,6 @@
 ** Last update Tue Jan 24 14:25:25 2017 Sylvain CORSINI
 */
 
-#include <stdio.h>
 #include <unistd.h>
 #include "allocation.h"
 
@@ -30,8 +29,7 @@ void free(void *ptr)
 	    block->prev->next = NULL;
 	  else
 	    g_base_heap = NULL;
-	  //sbrk(-(block->max_size + BLOCK_SIZE));
-	  brk(block);
+	  sbrk(-(block->max_size + BLOCK_SIZE));
 	}
     }
 }
