@@ -23,7 +23,7 @@ void free(void *ptr)
 	block = fusion_block(block->prev);
       if (block->next != NULL && block->next->free == 1)
 	fusion_block(block);
-      else
+      if (block->next == NULL)
 	{
 	  if (block->prev != NULL)
 	    block->prev->next = NULL;
