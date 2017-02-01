@@ -15,6 +15,7 @@ void free(void *ptr)
 {
   t_block *block;
 
+  pthread_mutex_lock(&lock);
   if (valid_block(ptr) == 1)
     {
       block = get_block(ptr);
@@ -29,7 +30,8 @@ void free(void *ptr)
 	    block->prev->next = NULL;
 	  else
 	    g_base_heap = NULL;
-	  sbrk(-(block->max_size + BLOCK_SIZE));
+	  brk(block);
 	}
     }
+  pthread_mutex_unlock(&lock);
 }

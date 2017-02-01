@@ -11,7 +11,9 @@
 #ifndef PSU_2016_MALLOC_ALLOCATION_H
 # define PSU_2016_MALLOC_ALLOCATION_H
 
-#include <stddef.h>
+# include <stddef.h>
+# include <pthread.h>
+# include <time.h>
 
 struct block
 {
@@ -29,6 +31,8 @@ typedef struct block t_block;
 
 extern void *g_base_heap;
 
+extern pthread_mutex_t lock;
+
 
 void *malloc(size_t size);
 
@@ -45,5 +49,7 @@ int valid_block(void *ptr);
 t_block *split_block(t_block *block, size_t size);
 
 t_block *fusion_block(t_block *block);
+
+void show_alloc_mem();
 
 #endif //PSU_2016_MALLOC_ALLOCATION_H

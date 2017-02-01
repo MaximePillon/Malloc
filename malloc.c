@@ -12,6 +12,8 @@
 #include <unistd.h>
 #include "allocation.h"
 
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+
 void *g_base_heap = NULL;
 
 static t_block *extend_heap(t_block *last_block, size_t size)
@@ -22,7 +24,9 @@ static t_block *extend_heap(t_block *last_block, size_t size)
   max_size = get_sufficient_size_of_malloc(size);
   block = sbrk(0);
   if (sbrk(max_size) == (void *) -1)
+  {
     return (NULL);
+  }
   block->max_size = max_size - BLOCK_SIZE;
   block->required_size = size;
   block->next = NULL;
@@ -51,6 +55,7 @@ void *malloc(size_t size)
 {
   t_block *block;
   t_block *last_block;
+  pthread_mutex_lock(&lock);
 
   if (g_base_heap == NULL)
     {
@@ -69,7 +74,10 @@ void *malloc(size_t size)
 	  block->free = 0;
 	}
     }
+  pthread_mutex_unlock(&lock);
   if (block == NULL)
+  {
     return (NULL);
+  }
   return ((void *) block + BLOCK_SIZE);
 }
