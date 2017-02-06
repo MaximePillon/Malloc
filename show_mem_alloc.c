@@ -29,5 +29,25 @@ void show_alloc_mem()
 	   tmp->free);
     tmp = tmp->next;
   }
+}
 
+void extend_show_alloc_mem()
+{
+  t_block *tmp;
+
+  printf("base : %p\n", g_base_heap);
+  printf("break : %p\n", sbrk(0));
+  if (g_base_heap == NULL)
+    return ;
+  tmp = g_base_heap;
+  while(tmp != NULL)
+    {
+      printf("block : %p; ", tmp);
+      printf("max_size : %lu; ", tmp->max_size);
+      printf("required_size : %lu; ", tmp->required_size);
+      printf("prev : %p; ", tmp->prev);
+      printf("next : %p; ", tmp->next);
+      printf("free : %d.\n", tmp->free);
+      tmp = tmp->next;
+    }
 }
