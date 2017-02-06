@@ -19,28 +19,40 @@ int main()
   char *tmp2;
   char *tmp3;
 
-  if ((tmp = malloc(sizeof(20))) == NULL)
-    return (-1);
-  if ((tmp1 = malloc(sizeof(40))) == NULL)
-    return (-1);
-  if ((tmp2 = malloc(sizeof(80))) == NULL)
-    return (-1);
-  if ((tmp3 = malloc(sizeof(5000))) == NULL)
-    return (-1);
+  extend_show_alloc_mem();
+  printf("----\n\n----\n");
 
-  show_alloc_mem();
-  printf("----\n\n----");
+  tmp = malloc(1);
+
+  extend_show_alloc_mem();
+  printf("----\n\n----\n");
+
   free(tmp);
-  show_alloc_mem();
-  printf("----\n\n----");
+
+  extend_show_alloc_mem();
+  printf("----\n\n----\n");
+
+
+  if ((tmp = malloc(20)) == NULL)
+    return (-1);
+  if ((tmp1 = malloc(40)) == NULL)
+    return (-1);
+  if ((tmp2 = malloc(80)) == NULL)
+    return (-1);
+  if ((tmp3 = malloc(5000)) == NULL)
+    return (-1);
+
+  extend_show_alloc_mem();
+  printf("----\n\n----\n");
+  free(tmp);
+  extend_show_alloc_mem();
+  printf("----\n\n----\n");
   free(tmp1);
-  show_alloc_mem();
-  printf("----\n\n----");
+  extend_show_alloc_mem();
+  printf("----\n\n----\n");
   free(tmp2);
-  show_alloc_mem();
-  printf("----\n\n----");
+  extend_show_alloc_mem();
+  printf("----\n\n----\n");
   free(tmp3);
-  show_alloc_mem();
-
-
+  extend_show_alloc_mem();
 }
