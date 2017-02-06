@@ -55,8 +55,8 @@ void *malloc(size_t size)
 {
   t_block *block;
   t_block *last_block;
-  pthread_mutex_lock(&lock);
 
+  pthread_mutex_lock(&lock);
   if (g_base_heap == NULL)
     {
       block = extend_heap(NULL, size);
@@ -80,4 +80,9 @@ void *malloc(size_t size)
     return (NULL);
   }
   return ((void *) block + BLOCK_SIZE);
+}
+
+void *calloc(size_t nmemb, size_t size)
+{
+  return (malloc(nmemb * size));
 }

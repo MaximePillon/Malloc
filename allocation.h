@@ -34,6 +34,8 @@ extern void *g_base_heap;
 extern pthread_mutex_t lock;
 
 
+void *calloc(size_t nmemb, size_t size);
+
 void *malloc(size_t size);
 
 void free(void *ptr);
@@ -51,5 +53,7 @@ t_block *split_block(t_block *block, size_t size);
 t_block *fusion_block(t_block *block);
 
 void show_alloc_mem();
+
+void extend_show_alloc_mem();
 
 #endif //PSU_2016_MALLOC_ALLOCATION_H
