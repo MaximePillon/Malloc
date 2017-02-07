@@ -76,9 +76,7 @@ void *malloc(size_t size)
     }
   pthread_mutex_unlock(&lock);
   if (block == NULL)
-  {
     return (NULL);
-  }
   return ((void *) block + BLOCK_SIZE);
 }
 
