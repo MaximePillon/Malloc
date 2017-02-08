@@ -1,2 +1,0 @@
-gcc -fPIC -DPIC -D_GNU_SOURCE -Iinc/ -g -ggdb3 -c malloc.c free.c realloc.c allocation_utils.c && ld -shared -o malloc.so malloc.o free.o realloc.o allocation_utils.o -ldl && LD_PRELOAD=`pwd`/malloc.so ./moul
-rm *.o
