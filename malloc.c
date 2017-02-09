@@ -10,6 +10,7 @@
 
 #include <stddef.h>
 #include <unistd.h>
+#include <memory.h>
 #include "allocation.h"
 
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
@@ -19,15 +20,15 @@ void *g_base_heap = NULL;
 static t_block *extend_heap(t_block *last_block, size_t size)
 {
   t_block *block;
-  size_t max_size;
+  size_t sufficient_size;
 
-  max_size = get_sufficient_size_of_malloc(size);
+  sufficient_size = get_sufficient_size_of_malloc(size);
   block = sbrk(0);
-  if (sbrk(max_size) == (void *) -1)
+  if (sbrk(sufficient_size) == (void *) -1)
   {
     return (NULL);
   }
-  block->max_size = max_size - BLOCK_SIZE;
+  block->max_size = sufficient_size - BLOCK_SIZE;
   block->required_size = size;
   block->next = NULL;
   block->magic_number = (void *) block + BLOCK_SIZE;
@@ -43,7 +44,7 @@ static t_block *find_block(t_block **last_block, size_t size)
   t_block *block;
 
   block = g_base_heap;
-  while (block && !(block->free == 1 && block->max_size >= size))
+  while (block != NULL && !(block->free == 1 && block->max_size >= size))
     {
       *last_block = block;
       block = block->next;
@@ -82,5 +83,11 @@ void *malloc(size_t size)
 
 void *calloc(size_t nmemb, size_t size)
 {
-  return (malloc(nmemb * size));
+  void *block;
+
+  block = malloc(nmemb * size);
+  if (block == NULL)
+    return (NULL);
+  memset(block, 0, nmemb * size);
+  return (block);
 }

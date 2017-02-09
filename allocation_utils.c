@@ -17,11 +17,9 @@ size_t get_sufficient_size_of_malloc(size_t required_size)
   size_t page_size;
 
   page_size = (size_t) getpagesize();
-  //page_size = 2;
   sufficient_size = page_size;
   while (required_size + BLOCK_SIZE > sufficient_size)
     {
-      //sufficient_size *= page_size;
       sufficient_size += page_size;
     }
   return (sufficient_size);
@@ -54,7 +52,7 @@ t_block *split_block(t_block *block, size_t size)
     {
       new_block = (void *) block + new_size;
       new_block->max_size = block->max_size - new_size;
-      new_block->required_size = new_block->max_size;
+      new_block->required_size = 0;
       block->max_size = new_size - BLOCK_SIZE;
       new_block->prev = block;
       new_block->next = block->next;
