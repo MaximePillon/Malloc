@@ -44,6 +44,8 @@ void thread_free(void *ptr);
 
 void free(void *ptr);
 
+void *thread_realloc(void *ptr, size_t size);
+
 void *realloc(void *ptr, size_t size);
 
 size_t get_sufficient_size_of_malloc(size_t size);
