@@ -36,7 +36,11 @@ extern pthread_mutex_t lock;
 
 void *calloc(size_t nmemb, size_t size);
 
+void *thread_malloc(size_t size);
+
 void *malloc(size_t size);
+
+void thread_free(void *ptr);
 
 void free(void *ptr);
 

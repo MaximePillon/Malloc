@@ -25,9 +25,9 @@ static t_block *extend_heap(t_block *last_block, size_t size)
   sufficient_size = get_sufficient_size_of_malloc(size);
   block = sbrk(0);
   if (sbrk(sufficient_size) == (void *) -1)
-  {
-    return (NULL);
-  }
+    {
+      return (NULL);
+    }
   block->max_size = sufficient_size - BLOCK_SIZE;
   block->required_size = size;
   block->next = NULL;
@@ -52,12 +52,11 @@ static t_block *find_block(t_block **last_block, size_t size)
   return (block);
 }
 
-void *malloc(size_t size)
+void *thread_malloc(size_t size)
 {
   t_block *block;
   t_block *last_block;
 
-  pthread_mutex_lock(&lock);
   if (sizeof(size_t) - (getpagesize() * 2) < size)
     return (NULL);
   if (g_base_heap == NULL)
@@ -77,19 +76,33 @@ void *malloc(size_t size)
 	  block->free = 0;
 	}
     }
-  pthread_mutex_unlock(&lock);
   if (block == NULL)
     return (NULL);
   return ((void *) block + BLOCK_SIZE);
 }
 
+void *malloc(size_t size)
+{
+  void *ptr;
+
+  pthread_mutex_lock(&lock);
+  ptr = thread_malloc(size);
+  pthread_mutex_unlock(&lock);
+  return (ptr);
+}
+
 void *calloc(size_t nmemb, size_t size)
 {
-  void *block;
+  void *ptr;
 
-  block = malloc(nmemb * size);
-  if (block == NULL)
-    return (NULL);
-  memset(block, 0, nmemb * size);
-  return (block);
+  pthread_mutex_lock(&lock);
+  ptr = thread_malloc(nmemb * size);
+  if (ptr == NULL)
+    {
+      pthread_mutex_unlock(&lock);
+      return (NULL);
+    }
+  memset(ptr, 0, nmemb * size);
+  pthread_mutex_unlock(&lock);
+  return (ptr);
 }

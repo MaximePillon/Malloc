@@ -11,11 +11,10 @@
 #include <unistd.h>
 #include "allocation.h"
 
-void free(void *ptr)
+void thread_free(void *ptr)
 {
   t_block *block;
 
-  pthread_mutex_lock(&lock);
   if (valid_block(ptr) == 1)
     {
       block = get_block(ptr);
@@ -33,5 +32,11 @@ void free(void *ptr)
 	  brk(block);
 	}
     }
+}
+
+void free(void *ptr)
+{
+  pthread_mutex_lock(&lock);
+  thread_free(ptr);
   pthread_mutex_unlock(&lock);
 }
