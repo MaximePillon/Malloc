@@ -58,6 +58,8 @@ void *malloc(size_t size)
   t_block *last_block;
 
   pthread_mutex_lock(&lock);
+  if (sizeof(size_t) - getpagesize() < size + BLOCK_SIZE)
+    return (NULL);
   if (g_base_heap == NULL)
     {
       block = extend_heap(NULL, size);
