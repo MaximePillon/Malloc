@@ -27,14 +27,14 @@ void *realloc(void *ptr, size_t size)
 	{
 	  block = split_block(block, size);
 	  pthread_mutex_unlock(&lock);
-	  return (block);
+	  return ((void*) block + BLOCK_SIZE);
 	}
       if (block->next != NULL && block->next->free == 1
 	  && block->max_size + block->next->max_size + BLOCK_SIZE >= size)
 	{
 	  block = split_block(fusion_block(block), size);
 	  pthread_mutex_unlock(&lock);
-	  return (block);
+	  return ((void *) block + BLOCK_SIZE);
 	}
       pthread_mutex_unlock(&lock);
       new_block = malloc(size);
