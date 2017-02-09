@@ -39,12 +39,9 @@ void *realloc(void *ptr, size_t size)
       pthread_mutex_unlock(&lock);
       new_block = malloc(size);
       if (new_block == NULL)
-	{
-	  free(ptr);
-	  return (NULL);
-	}
+	return (NULL);
       pthread_mutex_lock(&lock);
-      memcpy((void *) block + BLOCK_SIZE, new_block, block->max_size);
+      memcpy(ptr, new_block, block->max_size);
       pthread_mutex_unlock(&lock);
       free(ptr);
       return (new_block);
