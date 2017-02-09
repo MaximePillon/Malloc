@@ -27,7 +27,7 @@ void *realloc(void *ptr, size_t size)
 	{
 	  block = split_block(block, size);
 	  pthread_mutex_unlock(&lock);
-	  return ((void*) block + BLOCK_SIZE);
+	  return ((void *) block + BLOCK_SIZE);
 	}
       if (block->next != NULL && block->next->free == 1
 	  && block->max_size + block->next->max_size + BLOCK_SIZE >= size)
@@ -41,7 +41,7 @@ void *realloc(void *ptr, size_t size)
       if (new_block == NULL)
 	return (NULL);
       pthread_mutex_lock(&lock);
-      memcpy(ptr, new_block, block->max_size);
+      memcpy(new_block, ptr, block->max_size);
       pthread_mutex_unlock(&lock);
       free(ptr);
       return (new_block);
