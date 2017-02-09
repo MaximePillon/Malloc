@@ -15,7 +15,7 @@
 void *realloc(void *ptr, size_t size)
 {
   t_block *block;
-  t_block *new_block;
+  void *new_block;
 
   if (ptr == NULL)
     return (malloc(size));
@@ -25,14 +25,16 @@ void *realloc(void *ptr, size_t size)
       block = get_block(ptr);
       if (block->max_size >= size)
 	{
+	  block = split_block(block, size);
 	  pthread_mutex_unlock(&lock);
-	  return (split_block(block, size));
+	  return (block);
 	}
       if (block->next != NULL && block->next->free == 1
 	  && block->max_size + block->next->max_size + BLOCK_SIZE >= size)
 	{
+	  block = split_block(fusion_block(block), size);
 	  pthread_mutex_unlock(&lock);
-	  return (split_block(fusion_block(block), size));
+	  return (block);
 	}
       pthread_mutex_unlock(&lock);
       new_block = malloc(size);
@@ -42,7 +44,7 @@ void *realloc(void *ptr, size_t size)
 	  return (NULL);
 	}
       pthread_mutex_lock(&lock);
-      memcpy((void *) block + BLOCK_SIZE, (void *) new_block + BLOCK_SIZE, block->max_size);
+      memcpy((void *) block + BLOCK_SIZE, new_block, block->max_size);
       pthread_mutex_unlock(&lock);
       free(ptr);
       return (new_block);
