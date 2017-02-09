@@ -58,7 +58,7 @@ void *malloc(size_t size)
   t_block *last_block;
 
   pthread_mutex_lock(&lock);
-  if (sizeof(size_t) - getpagesize() < size + BLOCK_SIZE)
+  if (sizeof(size_t) - (getpagesize() * 2) < size)
     return (NULL);
   if (g_base_heap == NULL)
     {
