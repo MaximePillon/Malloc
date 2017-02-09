@@ -11,6 +11,7 @@
 #include <stddef.h>
 #include <unistd.h>
 #include <memory.h>
+#include <limits.h>
 #include "allocation.h"
 
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
@@ -25,9 +26,7 @@ static t_block *extend_heap(t_block *last_block, size_t size)
   sufficient_size = get_sufficient_size_of_malloc(size);
   block = sbrk(0);
   if (sbrk(sufficient_size) == (void *) -1)
-    {
       return (NULL);
-    }
   block->max_size = sufficient_size - BLOCK_SIZE;
   block->required_size = size;
   block->next = NULL;
@@ -57,7 +56,7 @@ void *thread_malloc(size_t size)
   t_block *block;
   t_block *last_block;
 
-  if (sizeof(size_t) - (getpagesize() * 2) < size)
+  if (size + BLOCK_SIZE > LONG_MAX)
     return (NULL);
   if (g_base_heap == NULL)
     {

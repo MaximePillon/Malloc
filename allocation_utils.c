@@ -15,13 +15,16 @@ size_t get_sufficient_size_of_malloc(size_t required_size)
 {
   size_t sufficient_size;
   size_t page_size;
+  size_t nb_page;
 
   page_size = (size_t) getpagesize();
   sufficient_size = page_size;
-  while (required_size + BLOCK_SIZE > sufficient_size)
+  nb_page = ((required_size + BLOCK_SIZE) / page_size) + 1;
+  sufficient_size = nb_page * page_size;
+  /*while (required_size + BLOCK_SIZE > sufficient_size)
     {
       sufficient_size += page_size;
-    }
+    }*/
   return (sufficient_size);
 }
 
