@@ -44,7 +44,7 @@ void 		thread_free(void *ptr);
 
 void 		free(void *ptr);
 
-void 		*thread_realloc(void *ptr, size_t size, t_block *block, void *new_block);
+void 		*thread_realloc(void *ptr, size_t size);
 
 void 		*realloc(void *ptr, size_t size);
 

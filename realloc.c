@@ -12,24 +12,21 @@
 #include 	<memory.h>
 #include 	"allocation.h"
 
-void 		*thread_realloc(void *ptr, size_t size, t_block *block, void *new_block)
+void 		*thread_realloc(void *ptr, size_t size)
 {
+  t_block	*block;
+  void		*new_block;
+
   if (ptr == NULL)
     return (thread_malloc(size));
   if (valid_block(ptr) == 1)
     {
       block = get_block(ptr);
       if (block->max_size >= size)
-	{
-	  block = split_block(block, size);
-	  return ((void *) block + BLOCK_SIZE);
-	}
+	return ((void *) split_block(block, size) + BLOCK_SIZE);
       if (block->next != NULL && block->next->free == 1
 	  && block->max_size + block->next->max_size + BLOCK_SIZE >= size)
-	{
-	  block = split_block(fusion_block(block), size);
-	  return ((void *) block + BLOCK_SIZE);
-	}
+	return ((void *) split_block(fusion_block(block), size) + BLOCK_SIZE);
       new_block = thread_malloc(size);
       if (new_block == NULL)
 	return (NULL);
@@ -42,13 +39,8 @@ void 		*thread_realloc(void *ptr, size_t size, t_block *block, void *new_block)
 
 void 		*realloc(void *ptr, size_t size)
 {
-  t_block	*block;
-  void		*new_block;
-
-  block = NULL;
-  new_block = NULL;
   pthread_mutex_lock(&lock);
-  ptr = thread_realloc(ptr, size, block, new_block);
+  ptr = thread_realloc(ptr, size);
   pthread_mutex_unlock(&lock);
   return (ptr);
 }
