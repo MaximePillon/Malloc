@@ -8,15 +8,12 @@
 ** Last update Mon Jan 23 10:29:30 2017 Maxime PILLON
 */
 
-#include <unistd.h>
-#include <memory.h>
-#include "allocation.h"
+#include 	<unistd.h>
+#include 	<memory.h>
+#include 	"allocation.h"
 
-void *thread_realloc(void *ptr, size_t size)
+void 		*thread_realloc(void *ptr, size_t size, t_block *block, void *new_block)
 {
-  t_block *block;
-  void *new_block;
-
   if (ptr == NULL)
     return (thread_malloc(size));
   if (valid_block(ptr) == 1)
@@ -43,10 +40,15 @@ void *thread_realloc(void *ptr, size_t size)
   return (ptr);
 }
 
-void *realloc(void *ptr, size_t size)
+void 		*realloc(void *ptr, size_t size)
 {
+  t_block	*block;
+  void		*new_block;
+
+  block = NULL;
+  new_block = NULL;
   pthread_mutex_lock(&lock);
-  ptr = thread_realloc(ptr, size);
+  ptr = thread_realloc(ptr, size, block, new_block);
   pthread_mutex_unlock(&lock);
   return (ptr);
 }

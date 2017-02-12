@@ -15,51 +15,51 @@
 # include <pthread.h>
 # include <time.h>
 
-struct block
+struct 		block
 {
-  size_t max_size;
-  size_t required_size;
-  struct block *next;
-  struct block *prev;
-  int free;
-  void *magic_number;
+  		size_t max_size;
+  		size_t required_size;
+  		struct block *next;
+  		struct block *prev;
+  		int free;
+  		void *magic_number;
 };
 
-typedef struct block t_block;
+typedef struct 	block t_block;
 
-# define        BLOCK_SIZE (sizeof(struct block))
+# define	BLOCK_SIZE (sizeof(struct block))
 
-extern void *g_base_heap;
+extern void 	*g_base_heap;
 
-extern pthread_mutex_t lock;
+extern 		pthread_mutex_t lock;
 
 
-void *calloc(size_t nmemb, size_t size);
+void 		*calloc(size_t nmemb, size_t size);
 
-void *thread_malloc(size_t size);
+void 		*thread_malloc(size_t size);
 
-void *malloc(size_t size);
+void 		*malloc(size_t size);
 
-void thread_free(void *ptr);
+void 		thread_free(void *ptr);
 
-void free(void *ptr);
+void 		free(void *ptr);
 
-void *thread_realloc(void *ptr, size_t size);
+void 		*thread_realloc(void *ptr, size_t size, t_block *block, void *new_block);
 
-void *realloc(void *ptr, size_t size);
+void 		*realloc(void *ptr, size_t size);
 
-size_t get_sufficient_size_of_malloc(size_t size);
+size_t 		get_sufficient_size_of_malloc(size_t size);
 
-t_block *get_block(void *ptr);
+t_block 	*get_block(void *ptr);
 
-int valid_block(void *ptr);
+int 		valid_block(void *ptr);
 
-t_block *split_block(t_block *block, size_t size);
+t_block 	*split_block(t_block *block, size_t size);
 
-t_block *fusion_block(t_block *block);
+t_block 	*fusion_block(t_block *block);
 
-void show_alloc_mem();
+void 		show_alloc_mem();
 
-void extend_show_alloc_mem();
+void 		extend_show_alloc_mem();
 
 #endif //PSU_2016_MALLOC_ALLOCATION_H

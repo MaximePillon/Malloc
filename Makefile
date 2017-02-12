@@ -16,7 +16,7 @@ FLAGS        	=    	-shared -o
 
 RM		=	rm -rf
 
-CFLAGS		+=    	-c -fPIC -DPIC -I include
+CFLAGS		+=    	-c -fPIC -DPIC -W -Wall -Werror -Wextra -I include
 
 NAME        	=	libmy_malloc.so
 

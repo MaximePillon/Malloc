@@ -8,20 +8,20 @@
 ** Last update Tue Jan 24 14:28:01 2017 Sylvain CORSINI
 */
 
-#include <stddef.h>
-#include <unistd.h>
-#include <memory.h>
-#include <limits.h>
-#include "allocation.h"
+#include 		<stddef.h>
+#include 		<unistd.h>
+#include 		<memory.h>
+#include 		<limits.h>
+#include 		"allocation.h"
 
-pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t 	lock = PTHREAD_MUTEX_INITIALIZER;
 
-void *g_base_heap = NULL;
+void 			*g_base_heap = NULL;
 
-static t_block *extend_heap(t_block *last_block, size_t size)
+static t_block 		*extend_heap(t_block *last_block, size_t size)
 {
-  t_block *block;
-  size_t sufficient_size;
+  t_block 		*block;
+  size_t 		sufficient_size;
 
   sufficient_size = get_sufficient_size_of_malloc(size);
   block = sbrk(0);
@@ -38,9 +38,9 @@ static t_block *extend_heap(t_block *last_block, size_t size)
   return (block);
 }
 
-static t_block *find_block(t_block **last_block, size_t size)
+static t_block 		*find_block(t_block **last_block, size_t size)
 {
-  t_block *block;
+  t_block 		*block;
 
   block = g_base_heap;
   while (block != NULL && !(block->free == 1 && block->max_size >= size))
@@ -51,10 +51,10 @@ static t_block *find_block(t_block **last_block, size_t size)
   return (block);
 }
 
-void *thread_malloc(size_t size)
+void 			*thread_malloc(size_t size)
 {
-  t_block *block;
-  t_block *last_block;
+  t_block 		*block;
+  t_block 		*last_block;
 
   if (size + BLOCK_SIZE > LONG_MAX)
     return (NULL);
@@ -80,9 +80,9 @@ void *thread_malloc(size_t size)
   return ((void *) block + BLOCK_SIZE);
 }
 
-void *malloc(size_t size)
+void 			*malloc(size_t size)
 {
-  void *ptr;
+  void 			*ptr;
 
   pthread_mutex_lock(&lock);
   ptr = thread_malloc(size);
@@ -90,9 +90,9 @@ void *malloc(size_t size)
   return (ptr);
 }
 
-void *calloc(size_t nmemb, size_t size)
+void 			*calloc(size_t nmemb, size_t size)
 {
-  void *ptr;
+  void 			*ptr;
 
   pthread_mutex_lock(&lock);
   ptr = thread_malloc(nmemb * size);

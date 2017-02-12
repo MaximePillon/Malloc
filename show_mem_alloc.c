@@ -8,13 +8,13 @@
 ** Last update Wed Feb 01 10:21:42 2017 Maxime PILLON
 */
 
-#include <stdio.h>
-#include <unistd.h>
-#include "allocation.h"
+#include 	<stdio.h>
+#include 	<unistd.h>
+#include 	"allocation.h"
 
-void show_alloc_mem()
+void 		show_alloc_mem()
 {
-  t_block *tmp;
+  t_block 	*tmp;
 
   printf("break : %p\n", sbrk(0));
   if (g_base_heap == NULL)
@@ -22,11 +22,10 @@ void show_alloc_mem()
   tmp = g_base_heap;
   while(tmp != NULL)
   {
-    printf("%p - %p : %d bytes -- free %d\n",
+    printf("%p - %p : %d bytes\n",
 	   tmp + BLOCK_SIZE,
 	   tmp + BLOCK_SIZE + tmp->required_size,
-	   (int)tmp->required_size,
-	   tmp->free);
+	   (int)tmp->required_size);
     tmp = tmp->next;
   }
 }
@@ -35,19 +34,19 @@ void extend_show_alloc_mem()
 {
   t_block *tmp;
 
-  printf("base : %p\n", g_base_heap);
-  printf("break : %p\n", sbrk(0));
+  dprintf(1, "base : %p\n", g_base_heap);
+  dprintf(1, "break : %p\n", sbrk(0));
   if (g_base_heap == NULL)
     return ;
   tmp = g_base_heap;
   while(tmp != NULL)
     {
-      printf("block : %p; ", tmp);
-      printf("max_size : %lu; ", tmp->max_size);
-      printf("required_size : %lu; ", tmp->required_size);
-      printf("prev : %p; ", tmp->prev);
-      printf("next : %p; ", tmp->next);
-      printf("free : %d.\n", tmp->free);
+      dprintf(1, "block : %p; ", tmp);
+      dprintf(1, "max_size : %lu; ", tmp->max_size);
+      dprintf(1, "required_size : %lu; ", tmp->required_size);
+      dprintf(1, "prev : %p; ", tmp->prev);
+      dprintf(1, "next : %p; ", tmp->next);
+      dprintf(1, "free : %d.\n", tmp->free);
       tmp = tmp->next;
     }
 }

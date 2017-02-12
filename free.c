@@ -8,12 +8,12 @@
 ** Last update Tue Jan 24 14:25:25 2017 Sylvain CORSINI
 */
 
-#include <unistd.h>
-#include "allocation.h"
+#include 	<unistd.h>
+#include 	"allocation.h"
 
-void thread_free(void *ptr)
+void 		thread_free(void *ptr)
 {
-  t_block *block;
+  t_block 	*block;
 
   if (valid_block(ptr) == 1)
     {
@@ -34,7 +34,7 @@ void thread_free(void *ptr)
     }
 }
 
-void free(void *ptr)
+void 	free(void *ptr)
 {
   pthread_mutex_lock(&lock);
   thread_free(ptr);

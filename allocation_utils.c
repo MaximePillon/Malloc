@@ -8,14 +8,14 @@
 ** Last update Tue Jan 24 14:25:25 2017 Sylvain CORSINI
 */
 
-#include <unistd.h>
-#include "allocation.h"
+#include 	<unistd.h>
+#include 	"allocation.h"
 
-size_t get_sufficient_size_of_malloc(size_t required_size)
+size_t 		get_sufficient_size_of_malloc(size_t required_size)
 {
-  size_t sufficient_size;
-  size_t page_size;
-  size_t nb_page;
+  size_t 	sufficient_size;
+  size_t 	page_size;
+  size_t 	nb_page;
 
   page_size = (size_t) getpagesize();
   nb_page = ((required_size + BLOCK_SIZE) / page_size) + 1;
@@ -23,14 +23,14 @@ size_t get_sufficient_size_of_malloc(size_t required_size)
   return (sufficient_size);
 }
 
-t_block *get_block(void *ptr)
+t_block 	*get_block(void *ptr)
 {
   return ((t_block *) (ptr - BLOCK_SIZE));
 }
 
-int valid_block(void *ptr)
+int 		valid_block(void *ptr)
 {
-  t_block *block;
+  t_block 	*block;
 
   if (g_base_heap != NULL && ptr > g_base_heap && ptr < sbrk(0))
     {
@@ -40,10 +40,10 @@ int valid_block(void *ptr)
   return (0);
 }
 
-t_block *split_block(t_block *block, size_t size)
+t_block 	*split_block(t_block *block, size_t size)
 {
-  t_block *new_block;
-  size_t new_size;
+  t_block 	*new_block;
+  size_t 	new_size;
 
   new_size = get_sufficient_size_of_malloc(size);
   if (new_size - BLOCK_SIZE != block->max_size)
@@ -62,7 +62,7 @@ t_block *split_block(t_block *block, size_t size)
   return (block);
 }
 
-t_block *fusion_block(t_block *block)
+t_block 	*fusion_block(t_block *block)
 {
   block->max_size += block->next->max_size + BLOCK_SIZE;
   block->required_size = block->max_size;
